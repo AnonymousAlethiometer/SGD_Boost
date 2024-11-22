@@ -21,7 +21,7 @@ from utils.shared_variables import SHARED_VARS
 from utils.zc_proxy import calc_synflow, calc_grad_norm
 from utils.optimizer import record_optimizer_info
 import time
-from optimizers import AdamSNRV3
+from optimizers import SGD_boost
 
 has_tqdm = False
 try:
@@ -212,6 +212,10 @@ class Trainer():
             # record snr
             self.record_snr(is_train=True)
 
+            if not hasattr(self.optimizer, 'has_warmup') and hasattr(self.optimizer, 'warmup_step'):
+                self.optimizer.warmup_step()
+                self.optimizer.has_warmup = True
+
             self.optimizer.step()
             # record_optimizer_info(self.optimizer, self.writter, self.current_step, self.current_epoch, extra_save_pth=self.args.root_save_path)  #TODO: save gradient info; 
 
@@ -256,9 +260,9 @@ class Trainer():
         with open(os.path.join(self.args.root_save_path, f'00_start_time__{readable_start_time}.txt'), 'w') as f:
             f.write(readable_start_time)
 
-        if type(self.optimizer) in [AdamSNRV3]:
-            # let us do optimizer warmup
-            self.on_optimizer_warmup()
+        # if type(self.optimizer) in [SGD_boost]:
+        #     # let us do optimizer warmup
+        #     self.on_optimizer_warmup()
 
 
         for epoch in range(self.args.epochs):
