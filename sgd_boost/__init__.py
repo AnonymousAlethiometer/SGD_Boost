@@ -6,3 +6,6 @@ LastEditors:
 Description: 
 FilePath: /SGD-Boost/sgd_boost/__init__.py
 '''
+from .sgd_boost import SGD_boost
+
+__all__ = ['SGD_boost']

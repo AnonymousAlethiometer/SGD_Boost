@@ -15,12 +15,12 @@ class SGD_boost(Optimizer):
     Arguments:
         params (iterable): iterable of parameters to optimize or dicts defining
             parameter groups
-        lr (float, optional): learning rate (default: 1e-3)
-        momentum (Tuple[float, float], optional): coefficients used for computing
-            running averages of gradient and its square (default: 0.9)
+        lr (float, optional): learning rate (default: 1e-2)
+        momentum (float, optional): coefficients used for computing
+            running averages of gradient (default: 0.9)
         eps (float, optional): term added to the denominator to improve
             numerical stability (default: 1e-8)
-        weight_decay (float, optional): weight decay coefficient (default: 1e-4)
+        weight_decay (float, optional): weight decay coefficient (default: 1e-2)
     
     Typical Use:
     >>> optimizer = SGD_boost(model.parameters(), lr=lr, momentum=0.9, eps=1e-08, weight_decay=weight_decay)
@@ -36,7 +36,7 @@ class SGD_boost(Optimizer):
 
     """
 
-    def __init__(self, params, lr=1e-2, momentum=0.9, eps=1e-8, weight_decay=5e-1):
+    def __init__(self, params, lr=1e-2, momentum=0.9, eps=1e-8, weight_decay=1e-2):
         if not 0.0 <= lr:
             raise ValueError("Invalid learning rate: {}".format(lr))
         if not 0.0 <= eps:
