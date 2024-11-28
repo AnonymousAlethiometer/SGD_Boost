@@ -11,13 +11,13 @@ Our method also enhances robustness to variations in learning rate and weight de
 
 <!-- [Overview](./figures/overview.svg) -->
 <p align='center'>
-    <img src="./figures/overview.svg" height='400px'/>
+    <img src="./figures/overview.svg" height='300px'/>
     <br/>
     <em><b>Figure1:</b> We analyze four key parameters: the weights of the Query, Key, and Value (QKV) in the first Transformer block; the normalization layer; the fully connected layers within that block; and the final MLP head layer. The gradient signal-to-noise ratio (g-SNR) differs across various parameter groups but remains stable throughout the training process. We utilize this signal to create a scaling strategy that adjusts the fixed learning rates in Stochastic Gradient Descent (SGD).</em>
 </p>
 <p align='center'>
-    <img src="./figures/optimizer_memory_comparison.svg" height='400px'/>
-    <img src="./figures/3d_scatter.svg" height='400px'/>
+    <img src="./figures/optimizer_memory_comparison.svg" height='300px'/>
+    <img src="./figures/3d_scatter.svg" height='300px'/>
     <br/>
     <em>
     <b>Figure2:</b>
@@ -26,7 +26,7 @@ Our method also enhances robustness to variations in learning rate and weight de
     </em>
 </p>
 <p align='center'>
-    <img src="./figures/algorithm_pseudocode.png" height='400px'/>
+    <img src="./figures/algorithm_pseudocode.png" height='300px'/>
     <br/>
     <em>
     <b>Figure3:</b> The pseudocode of the SGD-Boost optimizer.
