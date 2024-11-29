@@ -26,11 +26,14 @@ Our method also enhances robustness to variations in learning rate and weight de
     </em>
 </p>
 <p align='center'>
-    <img src="./figures/algorithm_pseudocode.png" height='300px'/>
+    <img src="./figures/vit_3d_scatter.svg" height='450px'/>
+    <img src="./figures/algorithm_pseudocode.png" height='450px'/>
     <br/>
     <em>
-    <b>Figure3:</b> The pseudocode of the SGD-Boost optimizer.
+    <b>Figure3:</b> 
+    <b>Left:</b> The figure presents the results of a grid search conducted on the ViT-S/16 model using the ImageNet-1K dataset. For better visualization and comparison, the axis for the learning rate has been inverted for SGD-like optimizers. The maximum top-1 test accuracy is highlighted in red text. Additionally, our method demonstrates superior performance compared to other popular optimizers, particularly in terms of stability in response to changes in hyperparameters.
     </em>
+    <b>Right:</b>The pseudocode of the SGD-Boost optimizer.
 </p>
 
 <!-- [Memory Comparison](./figures/optimizer_memory_comparison.svg) -->
