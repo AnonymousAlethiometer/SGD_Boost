@@ -4,6 +4,8 @@ Date: 2024-08-10 15:25:06
 LastEditTime: 2024-11-20 10:42:52
 LastEditors: Unknow
 Description: 
+v1.0.3 - remove warmup_step function for out-of-box usage, no need to call warmup_step function explicitly, friendly for distributed training, fix some potential bugs
+v1.0.2 - add warmup_step function
 FilePath: /Unknow/optimizers/sgd_boost.py
 '''
 import torch
@@ -28,9 +30,6 @@ class SGD_boost(Optimizer):
     >>>     pred = model(input_ids)
     >>>     loss = loss_fn(pred, labels)
     >>>     loss.backward()
-    >>>     if not hasattr(optimizer, 'has_warmup') and hasattr(optimizer, 'warmup_step'):
-    >>>         optimizer.warmup_step()
-    >>>         optimizer.has_warmup = True
     >>>     optimizer.step()
     >>>     optimizer.zero_grad(set_to_none=True)
 
@@ -47,6 +46,7 @@ class SGD_boost(Optimizer):
             raise ValueError("Invalid weight_decay value: {}".format(weight_decay))
         defaults = dict(lr=lr, momentum=momentum, eps=eps, weight_decay=weight_decay)
         super(SGD_boost, self).__init__(params, defaults)
+        self.has_warmup = False
 
 
     def __setstate__(self, state):
@@ -87,6 +87,7 @@ class SGD_boost(Optimizer):
                 grad_norm_snr = (grad_norm / (sigma + group['eps']))
                 param_state['gsnr'] = grad_norm_snr
 
+        self.has_warmup = True
         return loss
 
     @torch.no_grad()
@@ -97,6 +98,9 @@ class SGD_boost(Optimizer):
             closure (callable, optional): A closure that reevaluates the model
                 and returns the loss.
         """
+        if not self.has_warmup:
+            self.warmup_step(closure)
+
         loss = None
         if closure is not None:
             with torch.enable_grad():
@@ -113,11 +117,11 @@ class SGD_boost(Optimizer):
                 if p.grad is None:
                     continue
                 d_p = p.grad.data
+                param_state = self.state[p]
                 
                 # if weight_decay != 0:
                 #     d_p.add_(weight_decay, p.data)
                 if momentum != 0:
-                    param_state = self.state[p]
                     if 'momentum_buffer' not in param_state:
                     # if len(param_state) == 0:
                         buf = param_state['momentum_buffer'] = torch.clone(d_p).detach()
